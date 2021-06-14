@@ -62,8 +62,6 @@ const updateContact = async (contactId, name, email, phone) => {
   try {
     const listContact = await fs.readFile(contactsPath, 'utf8')
     const contact = JSON.parse(listContact)
-    // const updateContact = contact.map((cont) => cont.id.toString() === contactId ? { id: contactId, name, email, phone } : cont
-    // )
     contact.forEach((cont, index) => {
       if (cont.id.toString() === contactId) { contact[index] = { id: contactId, name, email, phone } }
     }

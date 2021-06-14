@@ -44,7 +44,7 @@ const postContacts = async (req, res, next) => {
     res.status(201).json({
       status: 'success',
       code: 201,
-      data
+      contact: data
     })
   } catch (err) {
     res.status(404).json({
@@ -62,7 +62,9 @@ const deleteContact = async (req, res, next) => {
       message: `contact '${contactId}' deleted`
     })
   } catch (err) {
-    console.log(err.message)
+    res.status(404).json({
+      message: err.message
+    })
   }
 }
 const putContact = async (req, res, next) => {
@@ -76,7 +78,9 @@ const putContact = async (req, res, next) => {
       message: `contact '${contactId}' changed`,
     })
   } catch (err) {
-    console.log(err.message)
+    res.status(404).json({
+      message: err.message
+    })
   }
 }
 

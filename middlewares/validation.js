@@ -2,8 +2,8 @@ const Joi = require('joi')
 
 const checkValidation = (schema, req, res, next) => {
   const validationResult = schema.validate(req.body)
-  if (validationResult.err) {
-    return res.status(404).json({ status: validationResult.err.details })
+  if (validationResult.error) {
+    return res.status(400).json({ status: validationResult.error.message })
   }
   next()
 }
@@ -11,9 +11,7 @@ const checkValidation = (schema, req, res, next) => {
 const validationData = (req, res, next) => {
   const schema = Joi.object({
     name: Joi.string()
-      .min(3)
-      .max(30)
-      .required(),
+      .min(3).max(30).required(),
     phone: Joi.string()
       .min(7)
       .max(10)

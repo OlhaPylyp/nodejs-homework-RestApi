@@ -6,14 +6,16 @@ const {
   getContactId,
   postContacts,
   deleteContact,
-  putContact
+  putContact,
+  patchContact
 } = require('../../controllers/contactsController')
-const { validationData } = require('../../middlewares/validation.js')
+const { validationData, patchValidation } = require('../../middlewares/validation.js')
 
 router.get('/', getContacts)
 router.get('/:contactId', getContactId)
 router.post('/', validationData, postContacts)
 router.delete('/:contactId', deleteContact)
 router.put('/:contactId', validationData, putContact)
+router.patch('/:contactId', patchValidation, patchContact)
 
 module.exports = router

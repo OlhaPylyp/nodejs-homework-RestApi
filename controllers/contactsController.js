@@ -3,7 +3,8 @@ const {
   getContactById,
   removeContact,
   addContact,
-  updateContact
+  updateContact,
+  changeContact
 } = require('../model/index')
 
 const getContacts = async (req, res, next) => {
@@ -83,11 +84,28 @@ const putContact = async (req, res, next) => {
     })
   }
 }
+const patchContact = async (req, res, next) => {
+  const { contactId } = req.params
+  const { name, email, phone } = req.body
+  try {
+    await changeContact(contactId, name, email, phone)
+    res.status(201).json({
+      status: 'success',
+      code: 201,
+      message: `contact '${contactId}' changed`,
+    })
+  } catch (err) {
+    res.status(404).json({
+      message: err.message
+    })
+  }
+}
 
 module.exports = {
   getContacts,
   getContactId,
   postContacts,
   deleteContact,
-  putContact
+  putContact,
+  patchContact
 }

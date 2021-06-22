@@ -12,10 +12,10 @@ const {
 const { validationData, updateContactValidation, updateStatusContactValidation } = require('../../middlewares/validation.js')
 
 router.get('/', getContactsController)
-router.get('/:contactId', getContactIdController)
+router.get('/:id', getContactIdController)
 router.post('/', validationData, postContactsController)
-router.delete('/:contactId', deleteContactController)
-router.put('/:contactId', updateContactValidation, updateContactController)
-router.patch('/:contactId', updateStatusContactValidation, updateStatusContactController)
+router.delete('/:id', deleteContactController)
+router.put('/:id', updateContactValidation, updateContactController)
+router.patch('/:id/favorite', updateStatusContactValidation, updateStatusContactController)
 
 module.exports = router

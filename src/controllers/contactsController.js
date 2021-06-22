@@ -10,7 +10,7 @@ const {
 const getContactsController = async (req, res, next) => {
   try {
     const client = await getContact()
-    res.status(200).json(client)
+    res.status(200).json({ client })
   } catch (error) {
     res.status(400).json({ message: error.message })
     next(error)
@@ -18,12 +18,12 @@ const getContactsController = async (req, res, next) => {
 }
 
 const getContactIdController = async (req, res, next) => {
-  const { clientId } = req.params
+  const { id } = req.params
   try {
-    const client = await getContactById(clientId)
+    const client = await getContactById(id)
     console.log('client', client)
     if (!client) {
-      return res.status(404).json(`There are no client with ${clientId} in db!`)
+      return res.status(404).json(`There are no client with ${id} in db!`)
     }
     return res.status(200).json({
       status: 'success',
@@ -51,10 +51,10 @@ const postContactsController = async (req, res, next) => {
   }
 }
 const deleteContactController = async (req, res, next) => {
-  const { clientId } = req.params
-  console.log(clientId)
+  const { id } = req.params
+  console.log(id)
   try {
-    await deleteContact(clientId)
+    await deleteContact(id)
     res.status(200).json({
       status: 'deleted success',
     })
@@ -68,12 +68,11 @@ const updateContactController = async (req, res, next) => {
   const { name, email, phone } = req.body
   try {
     const client = await updateContact(id, { name, email, phone })
-    if (client) { res.status(200).json(`client  ${client} with ${id} update`) } else {
-      res.status(404).json({
-        message: `Not found client id: ${id}`,
-        data: 'Not Found',
-      })
-    }
+    if (client) { return res.status(200).json(`client with ${id} update`) }
+    return res.status(404).json({
+      message: `Not found client id: ${id}`,
+      data: 'Not Found',
+    })
   } catch (e) {
     console.error(e)
     next(e)
@@ -82,15 +81,15 @@ const updateContactController = async (req, res, next) => {
 
 const updateStatusContactController = async (req, res, next) => {
   const { id } = req.params
-  const { favorite = true } = req.body
+  const { favorite } = req.body
+  console.log('req.body', req.body)
   try {
     const client = await updateStatusContact(id, { favorite })
-    if (client) { res.status(200).json(`client  ${client} with ${id} update`) } else {
-      res.status(404).json({
-        message: `Not found client id: ${id}`,
-        data: 'Not Found',
-      })
-    }
+    if (client) { return res.status(200).json(`client with ${id} update status`) }
+    return res.status(404).json({
+      message: `Not found client id: ${id}`,
+      data: 'Not Found',
+    })
   } catch (e) {
     console.error(e)
     next(e)

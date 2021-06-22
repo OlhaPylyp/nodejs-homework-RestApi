@@ -25,12 +25,7 @@ const getContactIdController = async (req, res, next) => {
     if (!client) {
       return res.status(404).json(`There are no client with ${id} in db!`)
     }
-    return res.status(200).json({
-      status: 'success',
-      data: {
-        contacts: client,
-      },
-    })
+    return res.status(200).json({ client })
   } catch (error) {
     res.status(400).json({ message: error.message })
   }
@@ -40,12 +35,7 @@ const postContactsController = async (req, res, next) => {
   const { name, email, phone, favorite } = req.body
   try {
     const client = await addContact({ name, email, phone, favorite })
-    res.status(200).json({
-      status: 'success',
-      data: {
-        contacts: client,
-      },
-    })
+    res.status(200).json({ client })
   } catch (error) {
     res.status(400).json({ message: error.message })
   }
@@ -85,7 +75,7 @@ const updateStatusContactController = async (req, res, next) => {
   console.log('req.body', req.body)
   try {
     const client = await updateStatusContact(id, { favorite })
-    if (client) { return res.status(200).json(`client with ${id} update status`) }
+    if (client) { return res.status(200).json(`client with ${id} update favorite status`) }
     return res.status(404).json({
       message: `Not found client id: ${id}`,
       data: 'Not Found',

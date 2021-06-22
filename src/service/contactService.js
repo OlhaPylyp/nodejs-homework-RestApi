@@ -28,7 +28,6 @@ const updateStatusContact = async (id, { favorite }) => {
     { $set: { favorite } },
     { new: true }
   )
-  console.log('updateClient', updateClient)
   return updateClient
 }
 const deleteContact = async (id) => {

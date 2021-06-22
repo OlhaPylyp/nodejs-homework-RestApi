@@ -1,33 +1,43 @@
 
-const { Contacts } = require('../db/contactModel')
+const { Contact } = require('../db/contactModel')
 
-const getContact = async () => { return await Contacts.find({}) }
-const getContactById = async (id) => {
-  return await Contacts.findById(id)
+const getContact = async () => {
+  return await Contact.find()
 }
-const addContact = async ({ name, email, phone, favorite }) => {
-  const client = new Contacts({ name, email, phone, favorite })
-  await client.save
-}
-const updateContactById = async (id, { name, email, phone, favorite }) => {
-  const client = await Contacts.findByIdAndUpdate(id, { name, email, phone, favorite })
+const getContactById = async (clientId) => {
+  const client = await Contact.findById(clientId)
   return client
 }
-const updateStatusContact = async (contactId, { favorite }) => {
-  const contact = await getContactById(contactId)
-  await Contacts.findByIdAndUpdate(contactId, {
-    $set: (contact.favorite = favorite),
+const addContact = async ({ name, email, phone }) => {
+  const newClient = new Contact({
+    name,
+    email,
+    phone,
   })
-}
-const deleteContact = async (id) => {
-  return await Contacts.findByIdAndRemove(id)
+  await newClient.save()
+  return newClient
 }
 
-module.export = {
+const updateContact = async ({ clientId, fields }) => {
+  const client = await Contact.findByIdAndUpdate(clientId, { $set: { ...fields } })
+  return client
+}
+
+const updateStatusContact = async (contactId, { favorite }) => {
+  const updateClient = await Contact.findByIdAndUpdate(contactId, {
+    $set: ({ favorite }),
+  }, { new: true })
+  return updateClient
+}
+const deleteContact = async (clientId) => {
+  return await Contact.findByIdAndRemove(clientId)
+}
+
+module.exports = {
   getContact,
   getContactById,
   deleteContact,
   addContact,
-  updateContactById,
+  updateContact,
   updateStatusContact,
 }

@@ -7,9 +7,9 @@ const {
   postContactsController,
   deleteContactController,
   updateContactController,
-  updateStatusContactController
-} = require('../controllers/contactsController')
-const { validationData, updateContactValidation, updateStatusContactValidation } = require('../middlewares/validation')
+  updateStatusContactController,
+} = require('../../controllers/contactsController.js')
+const { validationData, updateContactValidation, updateStatusContactValidation } = require('../../middlewares/validation.js')
 
 router.get('/', getContactsController)
 router.get('/:contactId', getContactIdController)

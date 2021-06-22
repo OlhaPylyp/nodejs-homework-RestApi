@@ -27,7 +27,7 @@ const updateContactValidation = (req, res, next) => {
     name: Joi.string().min(3).max(30),
     email: Joi.string().email({ minDomainSegments: 2 }),
     phone: Joi.string().min(7).max(14),
-  })
+  }).min(1)
   checkValidation(schema, req, res, next)
 }
 const updateStatusContactValidation = (req, res, next) => {

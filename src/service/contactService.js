@@ -13,8 +13,7 @@ const addContact = async ({ name, email, phone }) => {
     email,
     phone,
   })
-  await newClient.save()
-  return newClient
+  return await newClient.save()
 }
 
 const updateContact = async (id, { name, email, phone }) => {

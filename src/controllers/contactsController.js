@@ -16,7 +16,6 @@ const getContactsController = async (req, res, next) => {
     next(error)
   }
 }
-
 const getContactIdController = async (req, res, next) => {
   const { id } = req.params
   try {

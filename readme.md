@@ -9,7 +9,7 @@ bin/server - сервер приложения
 
 service/contactService - обработка данных из БД
 
-controllers/contactsController -контролеры
+controllers/contactsController -контроллеры
 
 routes/api/contacts - основные маршруты
 

@@ -20,7 +20,6 @@ const getContactIdController = async (req, res, next) => {
   const { id } = req.params
   try {
     const client = await getContactById(id)
-    console.log('client', client)
     if (!client) {
       return res.status(404).json(`There are no client with ${id} in db!`)
     }

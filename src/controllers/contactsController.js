@@ -61,9 +61,8 @@ const updateContactController = async (req, res, next) => {
       message: `Not found client id: ${id}`,
       data: 'Not Found',
     })
-  } catch (e) {
-    console.error(e)
-    next(e)
+  } catch (error) {
+    res.status(400).json({ message: error.message })
   }
 }
 
@@ -78,9 +77,8 @@ const updateStatusContactController = async (req, res, next) => {
       message: `Not found client id: ${id}`,
       data: 'Not Found',
     })
-  } catch (e) {
-    console.error(e)
-    next(e)
+  } catch (error) {
+    res.status(400).json({ message: error.message })
   }
 }
 

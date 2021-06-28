@@ -20,10 +20,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
-//   owner: {
-//     type: mongoose.SchemaType.ObjectId,
-//     ref: 'user',
-//   }
 })
 userSchema.pre('save', async function() {
   if (this.isNew) { this.password = bcrypt.hash(this.password, 10) }

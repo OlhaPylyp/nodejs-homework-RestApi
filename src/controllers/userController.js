@@ -1,31 +1,32 @@
 
 const {
   login,
-  registration
+  registration,
+  logout
 } = require('../service/authService')
 
 const registrationController = async (req, res, next) => {
   const { email, password } = req.body
-  try {
-    const user = await registration({ email, password })
-    res.status(200).json({ user })
-  } catch (error) {
-    res.status(400).json({ message: error.message })
-    next(error)
-  }
+  await registration({ email, password })
+  res.status(200).json({ status: 'success' })
 }
 const loginController = async (req, res, next) => {
   const { email, password } = req.body
-  try {
-    const token = await login({ email, password })
-    res.status(200).json({ token })
-  } catch (error) {
-    res.status(400).json({ message: error.message })
-    next(error)
-  }
+  const token = await login({ email, password })
+  res.status(200).json({ token })
 }
+const logoutController = async (req, res) => {
+  const { id } = req.user
+  const token = req.token
+  await logout({
+    id,
+    token
+  })
 
+  res.status(204).json({})
+}
 module.exports = {
   registrationController,
-  loginController
+  loginController,
+  logoutController
 }

@@ -3,16 +3,15 @@ const jwt = require('jsonwebtoken')
 const { User } = require('../db/userModel')
 
 const authMiddleware = async (req, res, next) => {
+  const [, token] = req.headers.authorization.split(' ')
+  if (!token) {
+    next(new NotAuthorized('please provide a token'))
+  }
   try {
-    const [, token] = req.headers.authorization.split(' ')
-
-    if (!token) {
-      next(new NotAuthorized('Not authorized'))
-    }
-
-    const user = jwt.verify(token, process.env.JWT_SECRET)
+    const user = jwt.decode(token, process.env.JWT_SECRET)
     req.user = user
     req.token = token
+    next()
     const userExist = await User.findOne({ _id: user.id, token })
 
     if (!userExist) {
@@ -20,7 +19,7 @@ const authMiddleware = async (req, res, next) => {
     }
     next()
   } catch (err) {
-    next(new NotAuthorized('Not authorized'))
+    next(new NotAuthorized('Invalid token'))
   }
 }
 module.exports = {

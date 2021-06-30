@@ -16,7 +16,7 @@ const contactSchema = new mongoose.Schema({
     default: false,
   },
   owner: {
-    type: mongoose.SchemaType.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
   }
 })

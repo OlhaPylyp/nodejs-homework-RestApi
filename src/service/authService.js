@@ -49,9 +49,15 @@ const logout = async ({ userId, token }) => {
   }
 }
 const getCurrentUser = async ({ userId, token }) => {
+  console.log('userId', userId, 'token=', token)
+  // const currentUser = await User.findOne(
+  //   { _id: userId, token },
+  // )
+
   const currentUser = await User.findOne(
     { _id: userId, token },
   )
+
   console.log('currentUser', currentUser)
   if (!currentUser) {
     throw new NotAuthorized('Not authorized')

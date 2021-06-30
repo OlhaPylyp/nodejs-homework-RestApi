@@ -39,21 +39,16 @@ const login = async ({ email, password }) => {
 }
 
 const logout = async ({ userId, token }) => {
-  const updatedUser = await User.findOneAndUpdate(
+  const logoutUser = await User.findOneAndUpdate(
     { _id: userId, token },
     { $set: { token: null } },
     { new: true }
   )
-  if (!updatedUser) {
+  if (!logoutUser) {
     throw new NotAuthorized('Not authorized')
   }
 }
 const getCurrentUser = async ({ userId, token }) => {
-  console.log('userId', userId, 'token=', token)
-  // const currentUser = await User.findOne(
-  //   { _id: userId, token },
-  // )
-
   const currentUser = await User.findOne(
     { _id: userId, token },
   )
@@ -64,10 +59,20 @@ const getCurrentUser = async ({ userId, token }) => {
   }
   return currentUser
 }
+const updateSubscription = async ({ userId, token, subscription }) => {
+  const updateUserSubscription = await User.findByIdAndUpdate(
+    { _id: userId, token },
+    { $set: { subscription } },
+    { new: true }
+  )
+  if (!updateUserSubscription) { throw new NotAuthorized('Not authorized') }
+  return updateUserSubscription
+}
 module.exports = {
   registration,
   login,
   logout,
-  getCurrentUser
+  getCurrentUser,
+  updateSubscription
 
 }

@@ -4,6 +4,7 @@ const { Contact } = require('../db/contactModel')
 const { NotAuthorized } = require('../helpers/errors')
 
 const getContact = async (userId) => {
+  console.log('userId', userId)
   return await Contact.find({ owner: userId })
 }
 const getContactById = async (userId, id) => {
@@ -13,12 +14,14 @@ const getContactById = async (userId, id) => {
   return await Contact.findById({ owner: userId, _id: id })
 }
 const addContact = async ({ name, email, phone }, userId) => {
+  console.log('userId', userId)
   const newClient = new Contact({
     name,
     email,
     phone,
     owner: userId,
   })
+  console.log('newClient', newClient)
   return await newClient.save()
 }
 

@@ -3,7 +3,8 @@ const {
   login,
   registration,
   logout,
-  getCurrentUser
+  getCurrentUser,
+  updateSubscription
 } = require('../service/authService')
 
 const registrationController = async (req, res, next) => {
@@ -32,9 +33,17 @@ const getCurrentUserController = async (req, res, next) => {
   const currentUser = await getCurrentUser({ userId, token })
   res.status(200).json({ currentUser })
 }
+const updateSubscriptionController = async (req, res, next) => {
+  const token = req.token
+  const { subscription } = req.body
+  const { _id: userId } = req.user
+  const currentUser = await updateSubscription({ userId, token, subscription })
+  res.status(200).json({ currentUser })
+}
 module.exports = {
   registrationController,
   loginController,
   logoutController,
-  getCurrentUserController
+  getCurrentUserController,
+  updateSubscriptionController
 }

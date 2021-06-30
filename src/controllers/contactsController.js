@@ -37,7 +37,7 @@ const postContactsController = async (req, res, next) => {
 
   try {
     const client = await addContact({ name, email, phone, favorite, userId })
-    res.status(200).json({ client })
+    res.status(200).json({ status: 'contact added', client })
   } catch (error) {
     res.status(400).json({ message: error.message })
   }

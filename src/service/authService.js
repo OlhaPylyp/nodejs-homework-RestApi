@@ -5,7 +5,7 @@ const { User } = require('../db/userModel')
 const { NotAuthorized, RegistrationConflictError } = require('../helpers/errors')
 
 const registration = async ({ email, password }) => {
-  const existEmail = User.findOne({ email })
+  const existEmail = await User.findOne({ email })
   if (existEmail) { throw new RegistrationConflictError('Email  is already used') }
   const user = new User({
     email,
@@ -19,8 +19,6 @@ const login = async ({ email, password }) => {
   if (!user) {
     throw new NotAuthorized('Email  is wrong')
   }
-  console.log('password', password)
-  console.log('user.password', user.password)
   if (!await bcrypt.compare(password, user.password)) {
     throw new NotAuthorized('Password is wrong')
   }
@@ -40,9 +38,9 @@ const login = async ({ email, password }) => {
   return updatedUser
 }
 
-const logout = async ({ id, token }) => {
+const logout = async ({ userId, token }) => {
   const updatedUser = await User.findOneAndUpdate(
-    { _id: id, token },
+    { _id: userId, token },
     { $set: { token: null } },
     { new: true }
   )
@@ -50,9 +48,20 @@ const logout = async ({ id, token }) => {
     throw new NotAuthorized('Not authorized')
   }
 }
+const getCurrentUser = async ({ userId, token }) => {
+  const currentUser = await User.findOne(
+    { _id: userId, token },
+  )
+  console.log('currentUser', currentUser)
+  if (!currentUser) {
+    throw new NotAuthorized('Not authorized')
+  }
+  return currentUser
+}
 module.exports = {
   registration,
   login,
-  logout
+  logout,
+  getCurrentUser
 
 }

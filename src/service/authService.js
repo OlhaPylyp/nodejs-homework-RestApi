@@ -59,7 +59,7 @@ const getCurrentUser = async ({ userId, token }) => {
   }
   return currentUser
 }
-const updateSubscription = async ({ userId, token, subscription }) => {
+const updateSubscription = async ({ token, subscription }, userId) => {
   const updateUserSubscription = await User.findByIdAndUpdate(
     { _id: userId, token },
     { $set: { subscription } },

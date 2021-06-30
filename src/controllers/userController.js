@@ -37,7 +37,7 @@ const updateSubscriptionController = async (req, res, next) => {
   const token = req.token
   const { subscription } = req.body
   const { _id: userId } = req.user
-  const currentUser = await updateSubscription({ userId, token, subscription })
+  const currentUser = await updateSubscription({ token, subscription }, userId)
   res.status(200).json({ currentUser })
 }
 module.exports = {

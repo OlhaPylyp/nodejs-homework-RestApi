@@ -12,4 +12,5 @@ controllers/contactsController -контроллеры
 routes/api/contacts - основные маршруты
 
 middlewares/validation - основная валидация
+### добавлена авторизация и аунтификация
 

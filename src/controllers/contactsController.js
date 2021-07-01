@@ -8,18 +8,19 @@ const {
 } = require('../service/contactService.js')
 
 const getContactsController = async (req, res, next) => {
+  const { _id: userId } = req.user
   try {
-    const client = await getContact()
+    const client = await getContact(userId)
     res.status(200).json({ client })
   } catch (error) {
     res.status(400).json({ message: error.message })
-    next(error)
   }
 }
 const getContactIdController = async (req, res, next) => {
   const { id } = req.params
+  const { _id: userId } = req.user
   try {
-    const client = await getContactById(id)
+    const client = await getContactById(id, userId)
     if (!client) {
       return res.status(404).json(`There are no client with ${id} in db!`)
     }
@@ -31,18 +32,19 @@ const getContactIdController = async (req, res, next) => {
 
 const postContactsController = async (req, res, next) => {
   const { name, email, phone, favorite } = req.body
+  const { _id: userId } = req.user
   try {
-    const client = await addContact({ name, email, phone, favorite })
-    res.status(200).json({ client })
+    const client = await addContact({ name, email, phone, favorite, userId })
+    return res.status(200).json({ status: 'contact added', client })
   } catch (error) {
     res.status(400).json({ message: error.message })
   }
 }
 const deleteContactController = async (req, res, next) => {
   const { id } = req.params
-  console.log(id)
+  const { _id: userId } = req.user
   try {
-    await deleteContact(id)
+    await deleteContact(id, userId)
     res.status(200).json({
       status: 'deleted success',
     })
@@ -53,11 +55,11 @@ const deleteContactController = async (req, res, next) => {
 
 const updateContactController = async (req, res, next) => {
   const { id } = req.params
+  const { _id: userId } = req.user
   const { name, email, phone } = req.body
   try {
-    const client = await updateContact(id, { name, email, phone })
-    if (client) { return res.status(200).json(`client with ${id} update`) }
-    return res.status(404).json({
+    const client = await updateContact(id, { name, email, phone }, userId)
+    if (client) { res.status(200).json(`client with ${id} update`) } res.status(404).json({
       message: `Not found client id: ${id}`,
       data: 'Not Found',
     })
@@ -68,10 +70,10 @@ const updateContactController = async (req, res, next) => {
 
 const updateStatusContactController = async (req, res, next) => {
   const { id } = req.params
+  const { _id: userId } = req.user
   const { favorite } = req.body
-  console.log('req.body', req.body)
   try {
-    const client = await updateStatusContact(id, { favorite })
+    const client = await updateStatusContact(id, { favorite }, userId)
     if (client) { return res.status(200).json(`client with ${id} update favorite status`) }
     return res.status(404).json({
       message: `Not found client id: ${id}`,

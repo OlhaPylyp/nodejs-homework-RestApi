@@ -8,7 +8,6 @@ const {
 } = require('../service/contactService.js')
 
 const getContactsController = async (req, res, next) => {
-  console.log('############### getContactsController')
   const { _id: userId } = req.user
   try {
     const client = await getContact(userId)
@@ -16,7 +15,6 @@ const getContactsController = async (req, res, next) => {
   } catch (error) {
     res.status(400).json({ message: error.message })
   }
-  console.log('############### getContactsController END')
 }
 const getContactIdController = async (req, res, next) => {
   const { id } = req.params

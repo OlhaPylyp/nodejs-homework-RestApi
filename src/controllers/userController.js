@@ -15,7 +15,7 @@ const registrationController = async (req, res, next) => {
 const loginController = async (req, res, next) => {
   const { email, password } = req.body
   const token = await login({ email, password })
-  res.status(200).json({ token })
+  return res.status(200).json({ token })
 }
 const logoutController = async (req, res) => {
   const { userId } = req.user
@@ -31,7 +31,7 @@ const getCurrentUserController = async (req, res, next) => {
   const token = req.token
   const { _id: userId } = req.user
   const currentUser = await getCurrentUser({ userId, token })
-  res.status(200).json({ currentUser })
+  return res.status(200).json({ currentUser })
 }
 const updateSubscriptionController = async (req, res, next) => {
   const token = req.token

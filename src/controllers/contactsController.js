@@ -8,14 +8,15 @@ const {
 } = require('../service/contactService.js')
 
 const getContactsController = async (req, res, next) => {
+  console.log('############### getContactsController')
   const { _id: userId } = req.user
   try {
     const client = await getContact(userId)
     res.status(200).json({ client })
   } catch (error) {
     res.status(400).json({ message: error.message })
-    next(error)
   }
+  console.log('############### getContactsController END')
 }
 const getContactIdController = async (req, res, next) => {
   const { id } = req.params
@@ -35,8 +36,8 @@ const postContactsController = async (req, res, next) => {
   const { name, email, phone, favorite } = req.body
   const { _id: userId } = req.user
   try {
-    const client = await addContact({ name, email, phone, favorite }, userId)
-    res.status(200).json({ status: 'contact added', client })
+    const client = await addContact({ name, email, phone, favorite, userId })
+    return res.status(200).json({ status: 'contact added', client })
   } catch (error) {
     res.status(400).json({ message: error.message })
   }
@@ -60,8 +61,7 @@ const updateContactController = async (req, res, next) => {
   const { name, email, phone } = req.body
   try {
     const client = await updateContact(id, { name, email, phone }, userId)
-    if (client) { return res.status(200).json(`client with ${id} update`) }
-    return res.status(404).json({
+    if (client) { res.status(200).json(`client with ${id} update`) } res.status(404).json({
       message: `Not found client id: ${id}`,
       data: 'Not Found',
     })

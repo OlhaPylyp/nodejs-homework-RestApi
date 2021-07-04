@@ -52,11 +52,6 @@ const getCurrentUser = async ({ userId, token }) => {
   const currentUser = await User.findOne(
     { _id: userId, token },
   )
-
-  console.log('currentUser', currentUser)
-  if (!currentUser) {
-    throw new NotAuthorized('Not authorized')
-  }
   return currentUser
 }
 const updateSubscription = async ({ token, subscription }, userId) => {

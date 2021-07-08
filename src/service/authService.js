@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const multer = require('multer')
+// const multer = require('multer')
 const path = require('path')
 const fs = require('fs').promises
 const jimp = require('jimp')
@@ -67,13 +67,13 @@ const updateSubscription = async ({ token, subscription }, userId) => {
   if (!updateUserSubscription) { throw new NotAuthorized('Not authorized') }
   return updateUserSubscription
 }
-const updateAvatar = async (userId, avatarUrl, imageName) => {
+const updateAvatar = async ({ userId, file }) => {
   // const FILE_DIR = path.join('./tmp')
   const AVATARS_DIR = path.join('./public/avatars')
-  const [, extension] = imageName.split('.')
+  const [, extension] = file.originalname.split('.')
   const newImageName = `${Date.now()}.${extension}`
-  if (avatarUrl) {
-    const avatars = await jimp.read(avatarUrl)
+  if (file) {
+    const avatars = await jimp.read(file.path)
     await avatars
       .autocrop()
       .cover(
@@ -81,10 +81,10 @@ const updateAvatar = async (userId, avatarUrl, imageName) => {
         250,
         jimp.HORIZONTAL_ALIGN_CENTER || jimp.VERTICAL_ALIGN_MIDDLE
       )
-      .writeAsync(avatarUrl)
-    await fs.rename(avatarUrl, path.join(AVATARS_DIR, newImageName))
+      .writeAsync(file.path)
+    await fs.rename(file.path, path.join(AVATARS_DIR, newImageName))
   }
-  const newFilePath = `/avatars/${newImageName}.${extension}`
+  const newFilePath = `/avatars/${newImageName}`
   await User.findOneAndUpdate({ _id: userId }, { $set: { avatarURL: newFilePath } }, { new: true })
 }
 module.exports = {

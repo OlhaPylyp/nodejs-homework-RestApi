@@ -37,6 +37,8 @@ router.post('/upload', uploadMiddleware.single('avatar'),
   async (req, res, next) => {
     if (req.file) {
       const { file } = req
+      console.log('file', file)
+      const [, extension] = file.originalname.split('.')
       const avatars = await jimp.read(file.path)
       console.log('file.path', file.path)
       await avatars
@@ -47,7 +49,7 @@ router.post('/upload', uploadMiddleware.single('avatar'),
           jimp.HORIZONTAL_ALIGN_CENTER || jimp.VERTICAL_ALIGN_MIDDLE
         )
         .writeAsync(file.path)
-      await fs.rename(file.path, path.join(AVATARS_DIR, file.fieldname + '-' + Date.now()))
+      await fs.rename(file.path, path.join(AVATARS_DIR, `${Date.now()}.${extension}`))
     } res.status(200).json('success')
   })
 router.use('/download', express.static(AVATARS_DIR))

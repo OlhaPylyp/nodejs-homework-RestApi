@@ -15,8 +15,8 @@ const registrationController = async (req, res, next) => {
 }
 const loginController = async (req, res, next) => {
   const { email, password } = req.body
-  const token = await login({ email, password })
-  return res.status(200).json({ token })
+  const user = await login({ email, password })
+  return res.status(200).json({ user })
 }
 const logoutController = async (req, res) => {
   const { userId } = req.user
@@ -44,17 +44,13 @@ const updateSubscriptionController = async (req, res, next) => {
 const avatarsController = async (req, res, next) => {
   const { file } = req
   const { _id: userId } = req.user
-  const token = req.token
-  const avatarURL = await updateAvatar({
+  await updateAvatar({
     userId,
-    file,
-    token
+    file
   })
-
   res.status(200).json({
     Status: 'OK',
-    ContentType: 'application/json',
-    ResponseBody: avatarURL
+    ContentType: 'application/json'
   })
 }
 module.exports = {

@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-// const multer = require('multer')
 const path = require('path')
 const fs = require('fs').promises
 const jimp = require('jimp')
@@ -68,7 +67,6 @@ const updateSubscription = async ({ token, subscription }, userId) => {
   return updateUserSubscription
 }
 const updateAvatar = async ({ userId, file }) => {
-  // const FILE_DIR = path.join('./tmp')
   const AVATARS_DIR = path.join('./public/avatars')
   const [, extension] = file.originalname.split('.')
   const newImageName = `${Date.now()}.${extension}`

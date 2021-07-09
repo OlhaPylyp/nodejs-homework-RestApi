@@ -43,14 +43,16 @@ const updateSubscriptionController = async (req, res, next) => {
 }
 const avatarsController = async (req, res, next) => {
   const { file } = req
-  const { _id: userId } = req.user
-  await updateAvatar({
+  const { _id: userId, avatarURL } = req.user
+  const newPathAvatar = await updateAvatar({
     userId,
-    file
+    file,
+    avatarURL
   })
   res.status(200).json({
     Status: 'OK',
-    ContentType: 'application/json'
+    ContentType: 'application/json',
+    avatarURL: newPathAvatar
   })
 }
 module.exports = {

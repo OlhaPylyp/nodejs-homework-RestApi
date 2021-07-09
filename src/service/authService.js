@@ -67,11 +67,14 @@ const updateSubscription = async ({ token, subscription }, userId) => {
   return updateUserSubscription
 }
 const updateAvatar = async ({ userId, file }) => {
+  const FILE_DIR = path.join(`./tmp/${file.filename}`)
+  console.log('FILE_DIR', FILE_DIR)
   const AVATARS_DIR = path.join('./public/avatars')
+  console.log('AVATARS_DIR', AVATARS_DIR)
   const [, extension] = file.originalname.split('.')
   const newImageName = `${Date.now()}.${extension}`
   if (file) {
-    const avatars = await jimp.read(file.path)
+    const avatars = await jimp.read(FILE_DIR)
     await avatars
       .autocrop()
       .cover(
@@ -79,11 +82,12 @@ const updateAvatar = async ({ userId, file }) => {
         250,
         jimp.HORIZONTAL_ALIGN_CENTER || jimp.VERTICAL_ALIGN_MIDDLE
       )
-      .writeAsync(file.path)
-    await fs.rename(file.path, path.join(AVATARS_DIR, newImageName))
+      .writeAsync(FILE_DIR)
+    await fs.rename(FILE_DIR, path.join(AVATARS_DIR, newImageName))
   }
-  const newFilePath = `/avatars/${newImageName}`
-  await User.findOneAndUpdate({ _id: userId }, { $set: { avatarURL: newFilePath } }, { new: true })
+  const newFilePath = `/api/download/${newImageName}`
+  const newA = await User.findOneAndUpdate({ _id: userId }, { $set: { avatarURL: newFilePath } }, { new: true })
+  return newA.avatarURL
 }
 module.exports = {
   registration,

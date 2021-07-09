@@ -13,14 +13,7 @@ const storage = multer.diskStorage({
 })
 const uploadMiddleware = multer({
   storage,
-  limits: { fileSize: 2000000 },
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype.includes('image')) {
-      cb(null, true)
-      return
-    }
-    cb(null, false)
-  }
+  limits: { fileSize: 2000000 }
 })
 
 module.exports = { uploadMiddleware }

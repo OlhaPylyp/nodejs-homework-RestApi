@@ -5,13 +5,28 @@ const {
   logout,
   getCurrentUser,
   updateSubscription,
-  updateAvatar
+  updateAvatar,
+  userVerification
 } = require('../service/authService')
 
 const registrationController = async (req, res, next) => {
   const { email, password } = req.body
   await registration({ email, password })
-  res.status(201).json({ status: 'created' })
+  res.status(201).json({
+    user: {
+      email: email,
+      password: password,
+      subscription: 'starter'
+    }
+  })
+  // json({ status: 'created' })
+}
+const userVerificationController = async (req, res, next) => {
+  const { verificationToken } = req.params
+  await userVerification(verificationToken)
+  res.status(200).json({
+    message: 'Verification successful',
+  })
 }
 const loginController = async (req, res, next) => {
   const { email, password } = req.body
@@ -61,5 +76,6 @@ module.exports = {
   logoutController,
   getCurrentUserController,
   updateSubscriptionController,
-  avatarsController
+  avatarsController,
+  userVerificationController
 }

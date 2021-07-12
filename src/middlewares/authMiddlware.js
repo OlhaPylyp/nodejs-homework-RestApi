@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const { User } = require('../db/userModel')
 
 const authMiddleware = async (req, res, next) => {
+  console.log('req=', req)
   const [, token] = req.headers.authorization.split(' ')
   if (!token) {
     next(new NotAuthorized('Not authorized'))

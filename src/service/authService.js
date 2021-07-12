@@ -7,7 +7,7 @@ const nodemailer = require('nodemailer')
 const sha256 = require('sha256')
 
 const { User } = require('../db/userModel')
-const { NotAuthorized, ValidationError, RegistrationConflictError } = require('../helpers/errors')
+const { NotAuthorized, ValidationError, WrongParametersError, RegistrationConflictError } = require('../helpers/errors')
 
 const registration = async ({ email, password }) => {
   const existEmail = await User.findOne({ email })
@@ -88,6 +88,34 @@ const userVerification = async (verificationToken) => {
   })
 }
 
+const userVerificationResend = async ({ email }) => {
+  const userVerified = await User.findOne({ email })
+  if (!userVerified) { throw new WrongParametersError('Missing required field email') }
+  if (userVerified.verify === true) { throw new WrongParametersError('Verification has already been passed') }
+  const verificationToken = sha256(email + process.env.JWT_SECRET)
+  userVerified.verifyToken = verificationToken
+  await userVerified.save()
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: 'testgoit971@gmail.com',
+      pass: '123456_test@',
+    },
+    tls: {
+      rejectUnauthorized: false
+    }
+  })
+  const info = await transporter.sendMail({
+    from: '"Fred  👻" <testgoit971@gmail.com>',
+    to: userVerified.email,
+    subject: 'Sender',
+    text: `Please  click on link:<a href = "http://localhost:3030/api/auth/verify/${verificationToken}"> for registration</a>`,
+    html: `Please  click on link:<a href = "http://localhost:3030/api/auth/verify/${verificationToken}"> for registration</a>`,
+  })
+}
+
 const logout = async ({ userId, token }) => {
   const logoutUser = await User.findOneAndUpdate(
     { _id: userId, token },
@@ -143,5 +171,6 @@ module.exports = {
   getCurrentUser,
   updateSubscription,
   updateAvatar,
-  userVerification
+  userVerification,
+  userVerificationResend
 }

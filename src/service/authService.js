@@ -143,9 +143,7 @@ const updateSubscription = async ({ token, subscription }, userId) => {
 }
 const updateAvatar = async ({ userId, file }) => {
   const FILE_DIR = path.join(`./tmp/${file.filename}`)
-  console.log('FILE_DIR', FILE_DIR)
   const AVATARS_DIR = path.join('./public/avatars')
-  console.log('AVATARS_DIR', AVATARS_DIR)
   const [, extension] = file.originalname.split('.')
   const newImageName = `${Date.now()}.${extension}`
   if (file) {

@@ -3,6 +3,7 @@ const { Contact } = require('../db/contactModel')
 const { NotAuthorized } = require('../helpers/errors')
 
 const getContact = async (userId) => {
+  console.log('userId', userId)
   return await Contact.find({ owner: userId }).select({ __v: 0 })
 }
 const getContactById = async (userId, id) => {

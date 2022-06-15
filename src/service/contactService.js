@@ -1,13 +1,13 @@
-const { Contact } = require("../db/contactModel");
+const { Cont } = require("../db/contactModel");
 
 const getContact = async () => {
-  return await Contact.find({});
+  return await Cont.find({});
 };
 const getContactById = async (id) => {
-  return await Contact.findById({ _id: id });
+  return await Cont.findById({ _id: id });
 };
 const addContact = async ({ name, surname, email, tel, work }) => {
-  const newClient = new Contact({
+  const newClient = new Cont({
     name,
     surname,
     email,
@@ -18,14 +18,14 @@ const addContact = async ({ name, surname, email, tel, work }) => {
 };
 
 const updateContact = async (id, { name, surname, email, tel, work }) => {
-  const client = await Contact.findByIdAndUpdate(
+  const client = await Cont.findByIdAndUpdate(
     { _id: id },
     { $set: { name, surname, email, tel, work } }
   );
   return client;
 };
 const deleteContact = async (id) => {
-  return await Contact.findByIdAndRemove({ _id: id });
+  return await Cont.findByIdAndRemove({ _id: id });
 };
 
 module.exports = {

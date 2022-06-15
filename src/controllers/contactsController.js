@@ -28,9 +28,9 @@ const getContactIdController = async (req, res, next) => {
 };
 
 const postContactsController = async (req, res, next) => {
-  const { name, email, tel, work } = req.body;
+  const { name, surname, email, tel, work } = req.body;
   try {
-    const client = await addContact({ name, email, tel, work });
+    const client = await addContact({ name, surname, email, tel, work });
     return res.status(200).json({ status: "contact added", client });
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -50,9 +50,9 @@ const deleteContactController = async (req, res, next) => {
 
 const updateContactController = async (req, res, next) => {
   const { id } = req.params;
-  const { name, email, tel, work } = req.body;
+  const { name, surname, email, tel, work } = req.body;
   try {
-    const client = await updateContact(id, { name, email, tel, work });
+    const client = await updateContact(id, { name, surname, email, tel, work });
     if (client) {
       res.status(200).json(`client with ${id} update`);
     }

@@ -9,6 +9,7 @@ const {
 const getContactsController = async (req, res, next) => {
   try {
     const client = await getContact();
+    console.log(client);
     res.status(200).json({ client });
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -18,6 +19,7 @@ const getContactIdController = async (req, res, next) => {
   const { id } = req.params;
   try {
     const client = await getContactById(id);
+
     if (!client) {
       return res.status(404).json(`There are no client with ${id} in db!`);
     }

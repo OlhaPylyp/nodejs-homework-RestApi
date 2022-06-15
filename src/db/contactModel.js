@@ -7,7 +7,7 @@ const contactSchema = new mongoose.Schema({
   },
   surname: {
     type: String,
-    required: [true, "Set surname for contact"],
+    // required: [true, "Set surname for contact"],
   },
   email: {
     type: String,

@@ -8,9 +8,8 @@ const {
 } = require("../service/contactService.js");
 
 const getContactsController = async (req, res, next) => {
-  const {} = req.user;
   try {
-    const client = await getContact(userId);
+    const client = await getContact();
     res.status(200).json({ client });
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -73,5 +72,4 @@ module.exports = {
   postContactsController,
   deleteContactController,
   updateContactController,
-  updateStatusContactController,
 };

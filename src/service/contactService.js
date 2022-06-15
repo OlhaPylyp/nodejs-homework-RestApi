@@ -1,12 +1,12 @@
 const { Contact } = require("../db/contactModel");
 
 const getContact = async () => {
-  return await Contact.find({}).select({ __v: 0 });
+  return await Contact.find({});
 };
 const getContactById = async (id) => {
   return await Contact.findById({ _id: id });
 };
-const addContact = async ({ name, email, tel }) => {
+const addContact = async ({ name, email, tel, work }) => {
   const newClient = new Contact({
     name,
     email,

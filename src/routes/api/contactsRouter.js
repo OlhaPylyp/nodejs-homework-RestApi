@@ -12,7 +12,7 @@ const {
   validationData,
   updateContactValidation,
 } = require("../../middlewares/validation.js");
-const { authMiddleware } = require("../../middlewares/authMiddlware");
+// const { authMiddleware } = require("../../middlewares/authMiddlware");
 
 router.use(authMiddleware);
 router.get("/", getContactsController);

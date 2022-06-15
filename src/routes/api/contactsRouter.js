@@ -14,7 +14,7 @@ const {
 } = require("../../middlewares/validation.js");
 // const { authMiddleware } = require("../../middlewares/authMiddlware");
 
-router.use(authMiddleware);
+// router.use(authMiddleware);
 router.get("/", getContactsController);
 router.get("/:id", getContactIdController);
 router.post("/", validationData, postContactsController);

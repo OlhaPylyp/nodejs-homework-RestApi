@@ -28,7 +28,7 @@ const getContactIdController = async (req, res, next) => {
 };
 
 const postContactsController = async (req, res, next) => {
-  const { name, surname, email, tel, work } = req.body;
+  const { name, surname, email, tel } = req.body;
   try {
     const client = await addContact({ name, surname, email, tel, work });
     return res.status(200).json({ status: "contact added", client });

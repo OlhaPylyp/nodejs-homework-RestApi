@@ -5,8 +5,8 @@ const connectMongo = async () => {
   try {
     return (
       mongoose.connect(
-        // process.env.DB_HOST,
-        "mongodb+srv://olha:olhasvet@cluster0.tm34v.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+        process.env.DB_HOST,
+        // "mongodb+srv://olha:olhasvet@cluster0.tm34v.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
         {
           useNewUrlParser: true,
           useUnifiedTopology: true,

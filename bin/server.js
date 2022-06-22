@@ -1,25 +1,22 @@
-require("dotenv").config();
 const app = require("../app");
-
-const { connectMongo } = require("../src/db/connection.js");
-const server = require("http").createServer(app);
-const io = require("socket.io")(server);
-io.on("connection", (socket) => {
-  console.log("add new client");
-  socket.on("Chat_Message", ({ message, userName }) => {
-    io.emit("Chat_Update", { message, userName });
-  });
-});
+require("dotenv").config();
 const PORT = process.env.PORT || 3000;
+
+const { connectMongo } = require("../src/db/connection");
 
 const start = async () => {
   try {
     await connectMongo();
-    server.listen(PORT, () => {
-      console.log(`Server running. Use our API on port: ${PORT}`);
+
+    app.listen(PORT, (err) => {
+      if (err) {
+        console.error("Error at server launch:", err);
+      }
+      console.log(`Database connection successful at port ${PORT}`);
     });
-  } catch (error) {
-    console.log(`Error on server start ${error.message}`);
+  } catch (err) {
+    console.error(`Failed to launch application with error ${err.message}`);
+    process.exit(1);
   }
 };
 
